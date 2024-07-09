@@ -26,7 +26,7 @@ jobs:
         id: remote
         run: |
           echo "registry=${{ steps.visibility.outputs.visibility == 'public' && 'ghcr.io' || '917951871879.dkr.ecr.eu-west-1.amazonaws.com' }}" >> "$GITHUB_OUTPUT"
-          echo "repository=${{ github.event.repository.name }}" >> "$GITHUB_OUTPUT"
+          echo "repository=${{ steps.visibility.outputs.visibility == 'public' && github.repository || github.event.repository.name }}" >> "$GITHUB_OUTPUT"
 
       - name: AWS Credentials
         if: ${{ steps.remote.outputs.registry == '917951871879.dkr.ecr.eu-west-1.amazonaws.com'}}
