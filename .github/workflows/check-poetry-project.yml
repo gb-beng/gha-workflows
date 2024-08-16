@@ -13,7 +13,7 @@ jobs:
       with:
         python-version-file: pyproject.toml
     - name: Install poetry
-      run: pipx install poetry==1.7.1
+      run: pipx install poetry==1.8.3
     - name: Check poetry.lock
       run: poetry check
     - name: Install poetry env from pyproject.toml
