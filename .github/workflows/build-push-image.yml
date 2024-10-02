@@ -22,8 +22,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Get git-sha
-        id: git-sha
+      - name: Get git sha
+        id: git-sha-short
         run: echo "sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - name: Configure remote
@@ -58,7 +58,7 @@ jobs:
           images: ${{ steps.remote.outputs.registry }}/${{ steps.remote.outputs.repository }}
           tags: |
               type=raw,value=edge,enable={{is_default_branch}}
-              type=raw,value=git-${{ steps.git-sha.outputs.sha }}
+              type=raw,value=git-${{ steps.git-sha-short.outputs.sha }}
 
       - name: Build image
         id: build
