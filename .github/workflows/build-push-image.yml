@@ -22,9 +22,16 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Extract branch name
+        id: git-branch
+        shell: bash
+        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+
       - name: Get git sha
         id: git-sha-short
-        run: echo "sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+        # this command requires git checkout. Want to avoid. Trying calling gh api
+        # run: echo "sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+        run: echo sha=$(cut -c 1-7 <<< `gh api "repos/${{ github.repository }}/commits/${{steps.git-branch.outputs.branch}}" --jq .sha`) >> $GITHUB_OUTPUT
 
       - name: Configure remote
         id: remote
