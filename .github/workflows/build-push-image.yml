@@ -17,7 +17,7 @@ jobs:
 
       - name: Add sha to GITHUB_OUTPUT
         id: git-sha-short
-        run: echo "sha=$(echo {{ github.sha }} | cut -c1-7)" >> $GITHUB_OUTPUT
+        run: echo "sha=$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_OUTPUT
 
       - name: Get Visibility
         id: visibility
