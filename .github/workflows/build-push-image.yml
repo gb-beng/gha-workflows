@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: Setup Buildx
-        uses: docker/setup-buildx-action@988b5a0280414f521da01fcc63a27aeeb4b104db # v3.6.1
+        uses: docker/setup-buildx-action@c47758b77c9736f4b2ef4073d4d51994fabfe349 # v3.7.1
 
       - name: Add sha to GITHUB_OUTPUT
         id: git-sha-short
