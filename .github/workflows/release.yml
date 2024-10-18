@@ -15,7 +15,7 @@ jobs:
           echo release_tag=v$(date '+%Y.%m.%d') >> $GITHUB_OUTPUT
       - name: release
         run: |
-          gh release create ${{ steps.metadata.release_tag }} \
+          gh release create ${{ steps.metadata.outputs.release_tag }} \
             --generate-notes
         env:
           GH_TOKEN: ${{ github.token }}
