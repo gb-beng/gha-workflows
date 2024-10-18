@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      - name: tag
+      - name: metadata
         id: metadata
         run: |
           echo release_tag=v$(date '+%Y.%m.%d') >> $GITHUB_OUTPUT
