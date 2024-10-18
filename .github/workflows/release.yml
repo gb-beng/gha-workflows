@@ -12,7 +12,7 @@ jobs:
       - name: tag
         id: metadata
         run: |
-          echo release_tag=v$(date '+%Y.%m.%d) >> $GITHUB_OUTPUT
+          echo release_tag=v$(date '+%Y.%m.%d') >> $GITHUB_OUTPUT
       - name: release
         run: |
           gh release create ${{ steps.metadata.release_tag }} \
