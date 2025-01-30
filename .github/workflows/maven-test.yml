@@ -1,0 +1,48 @@
+name: Maven Test
+
+on:
+  workflow_call:
+    inputs:
+      time-zone:
+        required: false
+        default: "Europe/Amsterdam"
+        type: string
+
+jobs:
+  maven-test:
+    runs-on:  ubuntu-24.04
+    env:
+      TZ: ${{ inputs.time-zone }}
+      MAVEN_OPTS: -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@928458dc63c29045d18a90cead4b79dcd0a6e98b # v4.2.2
+
+      - name: AWS Credentials
+        uses: aws-actions/configure-aws-credentials@f171d5c895855a39c1ef93ab625499424407e172 # v4.0.2
+        with:
+          aws-region: eu-west-1
+          role-to-assume: arn:aws:iam::917951871879:role/GitHubActionsBgOrg
+
+      - name: Get CodeArtifact Authorization Token
+        run: |
+          codeartifact_auth_token=$(aws codeartifact  get-authorization-token --domain nisv-ateam --domain-owner 917951871879 --region eu-west-1 --query authorizationToken --output text)
+          echo "::add-mask::$codeartifact_auth_token"
+          echo "CODEARTIFACT_AUTH_TOKEN=$codeartifact_auth_token" >> "$GITHUB_ENV"
+
+      - name: Set up JDK
+        uses: actions/setup-java@7a6d8a8234af8eb26422e24e3006232cccaa061b # v4.6.0
+        with:
+          distribution: 'temurin'
+          java-version-file: '.java-version'
+          cache: 'maven'
+          cache-dependency-path: 'pom.xml'
+
+      - name: Set Maven settings.xml
+        run: echo "${{ vars.MAVEN_CODE_ARTIFACT_SETTINGS }}" | base64 --decode > ~/.m2/settings.xml
+
+      - name: Maven test
+        run: |
+          mvn -B -U -fae clean install || { echo "Maven tests failed."; exit 1; }
+            
