@@ -5,8 +5,10 @@ on:
     inputs:
       workload:
         required: true
+        type: string
       image:
         required: true
+        type: string
 
 jobs:
   test:
