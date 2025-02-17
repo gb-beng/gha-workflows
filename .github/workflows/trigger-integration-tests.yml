@@ -15,4 +15,4 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
     - run: |
-        echo 'Triggering integration tests for ${{ github.event.inputs.workload }}/ ${{ github.event.inputs.image }}'
+        echo 'Triggering integration tests for ${{ inputs.workload }}/ ${{ inputs.image }}'
