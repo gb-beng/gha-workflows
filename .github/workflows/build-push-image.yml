@@ -2,6 +2,10 @@ name: Build & Push
 
 on:
   workflow_call:
+    outputs:
+      oci:
+        description: oci
+        value: ${{ jobs.build-push.outputs.oci }}
 
 jobs:
   build-push:
@@ -10,7 +14,8 @@ jobs:
       contents: read
       id-token: write
       packages: write
-
+    outputs:
+      oci: ${{ steps.remote.outputs.registry }}/${{ steps.remote.outputs.repository }}"
     steps:
       - name: Setup Buildx
         uses: docker/setup-buildx-action@f7ce87c1d6bead3e36075b2ce75da1f6cc28aaca # v3.9.0

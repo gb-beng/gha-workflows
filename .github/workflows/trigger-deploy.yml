@@ -1,0 +1,11 @@
+name: Trigger Deployment
+
+on:
+  workflow_call:
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+    - run: |
+        echo 'Triggering deployment'
